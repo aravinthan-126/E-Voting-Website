@@ -1,5 +1,4 @@
-Installation Guide for Node.js and Express.js of 
-E-Voting System
+Installation Guide for Node.js and Express.js of E-Voting System
 Prerequisites
 •	Node.js (Download from nodejs.org)
 •	MySQL Database
