@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+        }
+        .container {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .left-section {
+            background-color: #00c0ff;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+        }
+        .left-section .welcome {
+            font-size: 35px;
+        }
+        .left-section img {
+            width: 80%;
+            max-width: 300px;
+        }
+        .left-section h1 {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        .left-section p {
+            margin: 10px 0;
+            font-size: 16px;
+            text-align: center;
+        }
+        .buttonbox {
+            width: 220px;
+            margin: 35px auto;
+            position: relative;
+            box-shadow: 0 0 20px 9px #ff61241f;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .togglebtn {
+            padding: 10px 30px;
+            cursor: pointer;
+            background: transparent;
+            border: 0;
+            outline: none;
+            position: relative;
+            transition: background-color 0.5s ease; 
+        }
+        .btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 110px;
+            height: 100%;
+            background: linear-gradient(to right, #ff105f, #ffad06);
+            border-radius: 30px;
+            transition: left 0.5s ease;
+        }
+        .right-section .hero {
+            height: 100%;
+            width: 800px;
+            padding-top: 10px;
+            background-image: url("bg.jpg");
+            opacity: 0.7;
+            background-size: 1550px 1500px;
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .right-section .formbox {
+            background-color: #FFF;
+            width: 450px;
+            height: 400px;
+            position: relative;
+            padding: 20px;
+            box-shadow: 0 0 20px 9px #045a931f;
+            border-radius: 30px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .inputgroup {
+            position: absolute;
+            width: 100%;
+            transition: left 0.5s ease;
+        }
+        .inputfield {
+            text-align: center;
+            font-size: 15px;
+            height: 50px;
+            width: 80%;
+            padding: 10px 0;
+            margin: 10px 0;
+            outline: none;
+            border-radius: 50px;
+            background: transparent;
+        }
+        .submitbtn {
+            text-align: center;
+            width: 40%;
+            height: 40px;
+            cursor: pointer;
+            background: linear-gradient(to right, #ff105f, #ffad06);
+            border: none;
+            outline: none;
+            border-radius: 30px;
+            margin-top: 20px;
+            display: block;
+        }
+        #login {
+            left: 50px;
+        }
+        #register {
+            left: 480px;
+        }
+        #login h2{
+            padding-left: 150px;
+            padding-bottom: 15px;
+        }
+        #register h2{
+            padding-left: 130px; 
+            padding-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <center><br><h2 class="welcome">Welcome to E-Voting</h2></center>
+            <img src="home_page.png" alt="Voting Illustration">
+            <h1>One of us?</h1>
+            <p>If you have already signed up, that's great! Please LOGIN</p>
+            <div class="buttonbox">
+                <div class="btn" id="btn"></div>
+                <button type="button" class="togglebtn" onclick="login()">Log In</button>
+                <button type="button" class="togglebtn" onclick="register()">Register</button>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="hero">
+                <div class="formbox">
+                    <form id="login" class="inputgroup" method="POST" action="/login">
+                        <h2>login</h2>
+                        <input type="email" name="email" class="inputfield" placeholder="Email" required>
+                        <input type="password" name="password" class="inputfield" placeholder="Password" required>
+                        <button type="submit" class="submitbtn">Log In</button>
+                    </form>
+                    <form id="register" class="inputgroup" method="POST" action="/register">
+                        <h2>Register</h2>
+                        <input type="text" name="username" class="inputfield" placeholder="Username" required>
+                        <input type="email" name="email" class="inputfield" placeholder="Email" required>
+                        <input type="password" name="password" class="inputfield" placeholder="Password" required>
+                        <button type="submit" class="submitbtn">Register</button>
+                    </form>        
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function login() {
+            document.getElementById("login").style.left = "50px";
+            document.getElementById("register").style.left = "450px";
+            document.getElementById("btn").style.left = "0px";
+        }
+        function register() {
+            document.getElementById("login").style.left = "-450px";
+            document.getElementById("register").style.left = "50px";
+            document.getElementById("btn").style.left = "110px";
+        }
+    </script>
+</body>
+</html>

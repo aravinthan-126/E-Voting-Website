@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vote</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Your existing CSS styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        height: 100vh;
+        background-color: #f5f5f5;
+    }
+
+    .sidebar {
+        width: 250px;
+        background-color: #fff;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        color: #333;
+        text-decoration: none;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .sidebar a:hover {
+        background-color: #00bcd4;
+        color: #fff;
+    }
+
+    .sidebar a.active {
+        background-color: #00bcd4;
+        color: #fff;
+    }
+
+    .sidebar a i {
+        margin-right: 10px;
+    }
+
+    .content {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .content h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .table-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-container h2 {
+        background-color: #00bcd4;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px 5px 0 0;
+        margin: -20px -20px 20px -20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    button {
+        padding: 5px 10px;
+        color: #fff;
+        background-color: #00bcd4;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0097a7;
+    }
+
+    #vote-form-container {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 400px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    #vote-form-container h2 {
+        margin-bottom: 15px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    #vote-form-container label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+    }
+
+    #vote-form-container input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    #vote-form-container button {
+        width: 100%;
+        padding: 10px;
+        color: #fff;
+        background-color: #00bcd4;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    #vote-form-container button:hover {
+        background-color: #0097a7;
+    }
+
+    body::after {
+        content: '';
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    body.show-overlay::after {
+        display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <a href="usermanual.html"><i class="fas fa-info-circle"></i> Information</a>
+    <a href="voteregistration.html"><i class="fas fa-check-square"></i> Voter Registration</a>
+    <a href="vote.html" class="active"><i class="fas fa-map-marker-alt"></i> Voting-Area</a>
+    <a href="result.html"><i class="fas fa-chart-bar"></i> Result</a>
+    <a href="logout.html"><i class="fas fa-sign-out-alt"></i> LogOut</a>
+  </div>
+
+  <div class="content">
+    <h1>Voting Area</h1>
+    <div id="state-message" class="table-container"></div>
+    <div id="candidates-container" class="table-container" style="display: none;">
+      <h2>Registered Candidates</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Candidate ID</th>
+            <th>Name</th>
+            <th>Party</th>
+            <th>Age</th>
+            <th>Qualification</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="candidate-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="vote-form-container"></div>
+
+  <script>
+    function checkVotingState() {
+      fetch('/voting_state')
+        .then(response => response.json())
+        .then(data => {
+          const stateMessage = document.getElementById('state-message');
+          const candidatesContainer = document.getElementById('candidates-container');
+
+          if (data.state === 'Registration') {
+            stateMessage.innerHTML = '<h2>Registration process is ongoing.</h2>';
+            candidatesContainer.style.display = 'none';
+          } else if (data.state === 'Voting') {
+            stateMessage.innerHTML = '<h2>Voting is ongoing. Cast your vote below!</h2>';
+            candidatesContainer.style.display = 'block';
+            loadCandidates();
+          } else if (data.state === 'Vote Ending') {
+            stateMessage.innerHTML = '<h2>Voting has ended.</h2>';
+            candidatesContainer.style.display = 'none';
+          } else {
+            stateMessage.innerHTML = '<h2>Unknown state. Please contact support.</h2>';
+            candidatesContainer.style.display = 'none';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching voting state:', error);
+          document.getElementById('state-message').innerHTML = '<h2>Error fetching voting state.</h2>';
+        });
+    }
+
+    function loadCandidates() {
+      fetch('/candidates')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.getElementById('candidate-table-body');
+          tableBody.innerHTML = '';
+          data.forEach((candidate, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${candidate.candidate_id}</td>
+              <td>${candidate.name}</td>
+              <td>${candidate.party}</td>
+              <td>${candidate.age}</td>
+              <td>${candidate.qualification}</td>
+              <td>
+                <button 
+                  onclick="showVoteForm(${candidate.id}, '${candidate.candidate_id}', '${candidate.name}', '${candidate.party}')">
+                  Vote
+                </button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error fetching candidates:', error));
+    }
+
+    function showVoteForm(candidateId, candidate_ID, candidateName, candidateParty) {
+      const voteFormContainer = document.getElementById('vote-form-container');
+      voteFormContainer.innerHTML = `
+        <h2>Cast Your Vote</h2>
+        <form id="vote-form">
+          <p><strong>Candidate ID:</strong> ${candidate_ID}</p>
+          <p><strong>Candidate:</strong> ${candidateName}</p>
+          <p><strong>Party:</strong> ${candidateParty}</p>
+
+          <input type="hidden" id="candidate_ID" name="candidate_ID" value="${candidate_ID}">
+          <input type="hidden" id="candidateName" name="candidateName" value="${candidateName}">
+          <input type="hidden" id="candidateParty" name="candidateParty" value="${candidateParty}">
+
+          <label for="aadhar-number">Aadhaar Number:</label>
+          <input type="text" id="aadhar-number" name="aadharNumber" required>
+          
+          <label for="account-number">Account Number:</label>
+          <input type="text" id="account-number" name="accountNumber" required>
+          
+          <button type="submit">Submit Vote</button>
+        </form>
+        <button onclick="closeVoteForm()">Cancel</button>
+      `;
+
+      voteFormContainer.style.display = 'block';
+      document.body.classList.add('show-overlay');
+
+      document.getElementById('vote-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const voteData = Object.fromEntries(formData.entries());
+
+        fetch('/cast-vote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(voteData),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              alert('Vote cast successfully!');
+              closeVoteForm();
+            } else {
+              alert(data.message);
+            }
+          })
+          .catch(error => console.error('Error casting vote:', error));
+      });
+    }
+
+    function closeVoteForm() {
+      document.getElementById('vote-form-container').style.display = 'none';
+      document.body.classList.remove('show-overlay');
+    }
+
+    window.onload = checkVotingState;
+  </script>
+</body>
+</html>

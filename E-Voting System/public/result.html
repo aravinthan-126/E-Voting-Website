@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        height: 100vh;
+        background-color: #f5f5f5;
+    }
+
+    .sidebar {
+        width: 250px;
+        background-color: #fff;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        color: #333;
+        text-decoration: none;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .sidebar a:hover {
+        background-color: #00bcd4;
+        color: #fff;
+    }
+
+    .sidebar a.active {
+        background-color: #00bcd4;
+        color: #fff;
+    }
+
+    .sidebar a i {
+        margin-right: 10px;
+    }
+
+    .content {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .content h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .table-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-container h2 {
+        background-color: #00bcd4;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px 5px 0 0;
+        margin: -20px -20px 20px -20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .winner {
+        background-color: #c8e6c9;
+    }
+
+    .winner-container {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        background-color: #ffffff;
+        color: #2c6f2f;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: glow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+        0% {
+            box-shadow: 0 0 10px rgba(255, 235, 59, 0.7), 0 0 20px rgba(255, 235, 59, 0.5);
+        }
+        100% {
+            box-shadow: 0 0 20px rgba(255, 235, 59, 1), 0 0 30px rgba(255, 235, 59, 0.7);
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <a href="usermanual.html"><i class="fas fa-info-circle"></i> Information</a>
+    <a href="voteregistration.html"><i class="fas fa-check-square"></i> Voter Registration</a>
+    <a href="vote.html"><i class="fas fa-map-marker-alt"></i> Voting-Area</a>
+    <a href="result.html" class="active"><i class="fas fa-chart-bar"></i> Result</a>
+    <a href="logout.html"><i class="fas fa-sign-out-alt"></i> LogOut</a>
+  </div>
+
+  <div class="content">
+    <h1>Election Results</h1>
+    <div id="result-message" class="table-container">
+      <h2>Results</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Candidate ID</th>
+            <th>Name</th>
+            <th>Party</th>
+            <th>Total Votes</th>
+          </tr>
+        </thead>
+        <tbody id="result-table-body"></tbody>
+      </table>
+      <div id="winner-message" class="winner-container"></div>
+    </div>
+  </div>
+
+  <script>
+    function loadResults() {
+      // Fetch the current voting state
+      fetch('/voting_state')
+        .then(response => response.json())
+        .then(stateData => {
+          const resultMessage = document.getElementById('result-message');
+          const tableBody = document.getElementById('result-table-body');
+          const winnerMessage = document.getElementById('winner-message');
+          const state = stateData.state; // Assuming the response has a "state" key
+
+          if (state === 'Vote Ending') {
+            // Fetch and display the results if voting has ended
+            fetch('/results')
+              .then(response => response.json())
+              .then(resultsData => {
+                resultMessage.querySelector('h2').innerText = 'Results';
+                tableBody.innerHTML = '';
+                let winner = null;
+
+                resultsData.forEach((candidate, index) => {
+                  const row = document.createElement('tr');
+                  row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${candidate.candidate_id}</td>
+                    <td>${candidate.name}</td>
+                    <td>${candidate.party}</td>
+                    <td>${candidate.total_votes}</td>
+                  `;
+                  tableBody.appendChild(row);
+
+                  // Check if this candidate is the winner
+                  if (!winner || candidate.total_votes > winner.total_votes) {
+                    winner = candidate;
+                  }
+                });
+
+                // Display the winner below the table with grand decoration
+                if (winner) {
+                  winnerMessage.innerHTML = `🏆 Winner: <span style="font-size: 28px; color: #d32f2f;">${winner.name}</span> from <span style="font-size: 28px; color: #1976d2;">${winner.party}</span> with <span style="font-size: 28px; color: #388e3c;">${winner.total_votes}</span> votes! 🎉`;
+                }
+              })
+              .catch(error => {
+                console.error('Error fetching results:', error);
+                resultMessage.innerHTML = '<h2>Error fetching results.</h2>';
+              });
+          } else if (state === 'Voting') {
+            // Show a message if the election is ongoing
+            resultMessage.innerHTML = '<h2>The election is ongoing. Results will be available after voting ends.</h2>';
+            tableBody.innerHTML = '';
+            winnerMessage.innerHTML = '';
+          } else if (state === 'Registration') {
+            // Show a message if the election has not started
+            resultMessage.innerHTML = '<h2>The election has not started yet. Please check back later.</h2>';
+            tableBody.innerHTML = '';
+            winnerMessage.innerHTML = '';
+          } else {
+            // Handle unknown state
+            resultMessage.innerHTML = '<h2>Unknown state. Please contact support.</h2>';
+            tableBody.innerHTML = '';
+            winnerMessage.innerHTML = '';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching voting state:', error);
+          document.getElementById('result-message').innerHTML = '<h2>Error fetching voting state.</h2>';
+        });
+    }
+
+    window.onload = loadResults;
+  </script>
+</body>
+</html>

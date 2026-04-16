@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Manual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .sidebar a.active, .sidebar a:hover {
+            background-color: #00bcd4;
+            color: #fff;
+        }
+        .sidebar a i {
+            margin-right: 10px;
+        }
+    .content {
+        
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid #ccc;
+    overflow-y: auto;
+  }
+  
+  h1 {
+    font-size: 24px;
+    color: #333;
+    border-bottom: 2px solid #58c2f5;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    font-size: 20px;
+    color: #555;
+  }
+  
+  h3 {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  ul, ol {
+    margin: 10px 0 20px 20px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  strong {
+    color: #333;
+  }
+  
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="usermanual.html" class="active"><i class="fas fa-info-circle"></i> Information</a>
+        <a href="voteregistration.html" ><i class="fas fa-check-square"></i> Voter Registeration</a>
+        <a href="vote.html"><i class="fas fa-map-marker-alt"></i> Voting-Area</a>
+        <a href="result.html"><i class="fas fa-chart-bar"></i> Result</a>
+        <a href="logout.html"><i class="fas fa-sign-out-alt"></i> LogOut</a>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1>User Manual</h1>
+        </div>
+        <p>Welcome</p>
+        <p>These are few Guidelines for user :</p>
+        <h2>1. Voter Registeration</h2>
+        <ul>
+            <li>For casting the vote user needs to first register himself. For this registration purpose, the user will be provided a voter registration form on this website.</li>
+            <li>The voter can only register in the registration phase. After the registration phase is over the user can not register and thus will not be able to vote.</li>
+            <li>For registration, the user will have to enter his Aadhar card number and the account address which the user will be using for voting purpose.</li>
+            <li>At the first stage the user's age will be checked. If the user is 18 or above 18 years of age then only he is eligible to vote.</li>
+            <li>The second stage is OTP verification. This stage is required to validate the voter itself. After entering the aadhar number and successful age verification.</li>
+            <li>After entering correct OTP user will get successfully registered.</li>
+        </ul>
+        <h2>2. Voting Process</h2>
+        <p>Overall, voting process is divided into three phases. All of which will be initialized and terminated by the admin. User have to participate in the process according to current phase.</p>
+        <h3>1. Registration Phase:</h3>
+        <p>During this phase the registration of the users (which are going to cast the vote) will be carried out.</p>
+        <h3>2. Voting Phase:</h3>
+        <p>After initialization of voting phase from the admin, user can cast the vote in voting section. The casting of vote can be simply done by clicking on "VOTE" button, after which transaction will be initiated and after confirming transaction the vote will get successfully casted. After voting phase gets over user will not be able to cast vote.</p>
+        <h3>3. Result Phase:</h3>
+        <p>This is the final stage of whole voting process during which the results of election will be displayed at "Result" section.</p>
+    </div>
+</body>
+</html>

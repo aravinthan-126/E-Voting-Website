@@ -1,0 +1,104 @@
+<html>
+<head>
+    <title>Add Candidate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        .sidebar a.active {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        .sidebar a i {
+            margin-right: 10px;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        .form-container button {
+            height: 35px;
+            width: 100px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .form-container .overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container.button-group {
+            padding-left: 10px;
+            display: flex;
+     
+        }
+        .form-container button:hover {
+            background-color: #4CAF50;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="candidatedetail.html"><i class="fas fa-info-circle"></i> Candidate Details</a>
+        <a href="addcandidate.html" ><i class="fas fa-user-plus"></i> Add Candidate</a>
+        <a href="adminregisterforverifiedcandidates.html"><i class="fas fa-clipboard-list"></i> Register</a>
+        <a href="changestate.html"><i class="fas fa-exchange-alt"></i> Change State</a>
+        <a href="adminlogout.html" class="active"><i class="fas fa-sign-out-alt"></i> LogOut</a>
+    </div>
+
+    <div class="content">
+        <div class="form-container">
+            <div class="overlay">
+                <div class="logout-dialog">
+                    <h3>Do you want to Logout?</h3>
+                    <div class="button-group">
+                        <a href="addcandidate.html"><button class="btn cancel">Cancel</button></a>
+                        <a href="index.html"><button class="btn logout">Logout</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

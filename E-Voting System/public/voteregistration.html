@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .sidebar a.active, .sidebar a:hover {
+            background-color: #00bcd4;
+            color: #fff;
+        }
+        .sidebar a i {
+            margin-right: 10px;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+        .form-container h2 {
+            background-color: #00bcd4;
+            color: #fff;
+            padding: 15px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .form-container input {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00bcd4;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0097a7;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="usermanual.html"><i class="fas fa-info-circle"></i> Information</a>
+        <a href="voteregistration.html" class="active"><i class="fas fa-check-square"></i> Voter Registration</a>
+        <a href="vote.html"><i class="fas fa-map-marker-alt"></i> Voting-Area</a>
+        <a href="result.html"><i class="fas fa-chart-bar"></i> Result</a>
+        <a href="logout.html"><i class="fas fa-sign-out-alt"></i> LogOut</a>
+    </div>
+    <div class="content">
+        <div class="form-container">
+            <h2>REGISTRATION</h2>
+            <form id="voter-form" action="/validate-voter" method="post">
+                <input name="aadhar_number" type="text" placeholder="Aadhar Number" required>
+                <input name="account_address" type="text" placeholder="Account Address" required>
+                <button type="submit">REGISTER</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Handle form submission
+        document.querySelector('#voter-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const aadhar_number = document.querySelector('input[name="aadhar_number"]').value;
+            const account_address = document.querySelector('input[name="account_address"]').value;
+
+            fetch('http://localhost:3000/validate-voter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ aadhar_number, account_address }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert("Registration successful!"); // Show success alert
+                    document.getElementById('voter-form').reset(); // Reset form fields
+                } else {
+                    alert(data.message); // Show error message
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>

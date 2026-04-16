@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log out</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .sidebar a.active, .sidebar a:hover {
+            background-color: #00bcd4;
+            color: #fff;
+        }
+        .sidebar a i {
+            margin-right: 10px;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        .form-container button {
+            height: 35px;
+            width: 100px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .form-container .overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container.button-group {
+            padding-left: 10px;
+            display: flex;
+     
+        }
+        .form-container button:hover {
+            background-color: #00bcd4;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="usermanual.html"><i class="fas fa-info-circle"></i> Information</a>
+        <a href="voteregistration.html" ><i class="fas fa-check-square"></i> Voter Registeration</a>
+        <a href="vote.html"><i class="fas fa-map-marker-alt"></i> Voting-Area</a>
+        <a href="result.html"><i class="fas fa-chart-bar"></i> Result</a>
+        <a href="logout.html"class="active"><i class="fas fa-sign-out-alt"></i> LogOut</a>
+    </div>
+    <div class="content">
+        <div class="form-container">
+            <div class="overlay">
+                <div class="logout-dialog">
+                    <h3>Do you want to Logout?</h3>
+                    <div class="button-group">
+                        <a href="usermanual.html"><button class="btn cancel">Cancel</button></a>
+                        <a href="index.html"><button class="btn logout">Logout</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
